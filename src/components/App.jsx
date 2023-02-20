@@ -4,7 +4,7 @@ import { Form } from './Form/Form';
 import { Contacts } from './Contacts/Contacts';
 import { Filter } from './Filter/Filter';
 import { nanoid } from 'nanoid';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 
 export class App extends Component {
   state = {
@@ -30,8 +30,10 @@ export class App extends Component {
     });
 
     this.result === 'true'
-      ? Notify.warning(
-          `Contact with name : ${name} and number : ${number} already exists`
+      ? Report.info(
+          '',
+          `Contact with name ${name} and number ${number} already exists`,
+          'Okay'
         )
       : this.setState(prevState => ({
           contacts: [

@@ -7,8 +7,11 @@ export const FormStyled = styled.form`
   gap: 10px;
 
   & input {
-    position: relative;
     margin-left: 10px;
+  }
+
+  & .name {
+    margin-left: 25px;
   }
 
   & button {

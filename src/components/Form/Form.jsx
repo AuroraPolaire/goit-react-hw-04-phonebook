@@ -29,6 +29,7 @@ export class Form extends Component {
           <label>
             Name
             <input
+              className="name"
               type="text"
               name="name"
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
