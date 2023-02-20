@@ -1,4 +1,5 @@
 import { FormStyled } from './Form.styled';
+import PropTypes from 'prop-types';
 
 export const Filter = ({ filter, value }) => {
   return (
@@ -16,4 +17,9 @@ export const Filter = ({ filter, value }) => {
       </label>
     </FormStyled>
   );
+};
+
+Filter.propTypes = {
+  filter: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
 };

@@ -1,4 +1,5 @@
 import { Table } from './Contacts.styled';
+import PropTypes from 'prop-types';
 
 export const Contacts = ({ contactList, deleteContact }) => {
   return (
@@ -20,4 +21,13 @@ export const Contacts = ({ contactList, deleteContact }) => {
       </tbody>
     </Table>
   );
+};
+
+Contacts.propTypes = {
+  contactList: PropTypes.arrayOf(
+    PropTypes.shape({
+      contact: PropTypes.object,
+    })
+  ),
+  deleteContact: PropTypes.func.isRequired,
 };

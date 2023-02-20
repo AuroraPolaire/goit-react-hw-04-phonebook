@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { FormStyled } from '../Filter/Form.styled';
+import PropTypes from 'prop-types';
 
 export class Form extends Component {
   state = {
@@ -57,3 +58,8 @@ export class Form extends Component {
     );
   }
 }
+
+Form.propTypes = {
+  name: PropTypes.string,
+  value: PropTypes.number,
+};
