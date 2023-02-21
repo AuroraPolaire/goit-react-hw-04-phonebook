@@ -5,6 +5,7 @@ import { Contacts } from './Contacts/Contacts';
 import { Filter } from './Filter/Filter';
 import { nanoid } from 'nanoid';
 import { Report } from 'notiflix/build/notiflix-report-aio';
+import PropTypes from 'prop-types';
 
 export class App extends Component {
   state = {
@@ -73,3 +74,9 @@ export class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  name: PropTypes.string,
+  number: PropTypes.number,
+  id: PropTypes.string,
+};
