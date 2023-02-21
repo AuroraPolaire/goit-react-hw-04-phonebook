@@ -17,19 +17,12 @@ export class App extends Component {
     filter: '',
   };
 
-  static result = 'false';
-
   updateContacts = ({ name, number }) => {
-    this.result = 'false';
-    this.state.contacts.forEach(contact => {
-      console.log(contact.name.includes(name));
-      if (contact.name === name && contact.number === number) {
-        this.result = 'true';
-        return;
-      }
+    const contactExists = this.state.contacts.find(contact => {
+      return contact.name === name || contact.number === number;
     });
 
-    this.result === 'true'
+    contactExists
       ? Report.info(
           '',
           `Contact with name ${name} and number ${number} already exists`,
