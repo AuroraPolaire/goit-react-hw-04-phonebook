@@ -1,32 +1,42 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { FormStyled } from '../Filter/Form.styled';
 import PropTypes from 'prop-types';
 
-export class Form extends Component {
-  state = {
-    name: '',
-    number: '',
+export const Form = ({onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('')
+
+
+  const handleChange = e => {
+
+    const { name, value } = e.target;
+
+    switch (name){
+      case 'name' :
+        return setName(value);
+      case 'number' :
+        return setNumber(value);
+        default:
+          return;
+
+    }
   };
 
-  handleChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.resetForm();
+    onSubmit({name, number});
+    resetForm();
   };
 
-  resetForm = () => {
-    this.setState({ name: '', number: '' });
+ const resetForm = () => {
+    setName('');
+    setNumber('')
+    
   };
 
-  render() {
-    return (
+  return (
       <div>
-        <FormStyled onSubmit={this.handleSubmit}>
+        <FormStyled onSubmit={handleSubmit}>
           <label>
             Name
             <input
@@ -36,8 +46,8 @@ export class Form extends Component {
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               required
-              value={this.state.name}
-              onChange={this.handleChange}
+              value={name}
+              onChange={handleChange}
             />
           </label>
           <label>
@@ -48,8 +58,8 @@ export class Form extends Component {
               pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
               title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
               required
-              value={this.state.number}
-              onChange={this.handleChange}
+              value={number}
+              onChange={handleChange}
             />
           </label>
           <button type="submit">Add contact</button>
@@ -57,9 +67,8 @@ export class Form extends Component {
       </div>
     );
   }
-}
 
 Form.propTypes = {
   name: PropTypes.string,
-  value: PropTypes.number,
+  value: PropTypes.string,
 };

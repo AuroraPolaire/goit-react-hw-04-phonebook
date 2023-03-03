@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Section } from './Section/Section';
 import { Form } from './Form/Form';
 import { Contacts } from './Contacts/Contacts';
@@ -7,32 +7,17 @@ import { nanoid } from 'nanoid';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import PropTypes from 'prop-types';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+export const App = () => {
+const [contacts, setContacts] = useState(() => JSON.parse(window.localStorage.getItem('contacts')) ?? []);
+const [filter, setFilter] = useState('');
 
-  componentDidMount() {
-    const savedContacts = localStorage.getItem('contacts');
-    if (savedContacts !== null) {
-      return this.setState({ contacts: JSON.parse(savedContacts) });
-    }
-  }
+useEffect(() => {
+  window.localStorage.setItem('contacts', JSON.stringify(contacts))
+},[contacts])
 
-  componentDidUpdate(_, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
-  updateContacts = ({ name, number }) => {
-    const contactExists = this.state.contacts.find(contact => {
+  const updateContacts = ({ name, number }) => {
+    const contactExists = contacts.find(contact => {
       return contact.name === name || contact.number === number;
     });
 
@@ -42,51 +27,40 @@ export class App extends Component {
           `Contact with name ${name} and number ${number} already exists`,
           'Okay'
         )
-      : this.setState(prevState => ({
-          contacts: [
-            ...prevState.contacts,
-            {
-              name,
-              number,
-              id: nanoid(),
-            },
-          ],
-        }));
+      : setContacts(prevContacts => ([...prevContacts, {id: nanoid(), name, number}]))
+      
+      
   };
 
-  filterContacts = e => {
-    this.setState({ filter: e.currentTarget.value });
+  const filterContacts = e => {
+    setFilter(e.target.value);
   };
 
-  deleteContacts = id => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== id),
-    }));
-  };
-
-  render() {
-    const { filter } = this.state;
-
-    const normalizedFilter = this.state.filter.toLowerCase();
-    const filteredContacts = this.state.contacts.filter(contact =>
+  const deleteContacts = id => {
+    setContacts(prevContacts => (prevContacts.filter(contact => contact.id !== id))
+  )};
+     
+  const normalizedFilter = filter.toLowerCase();
+  const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
-    return (
+  return (
       <>
         <Section title="Phonebook">
-          <Form onSubmit={this.updateContacts} />
+          <Form onSubmit={updateContacts} />
         </Section>
         <Section title="Contacts">
-          <Filter value={filter} filter={this.filterContacts} />
+          <Filter value={filter} filter={filterContacts} />
           <Contacts
             contactList={filteredContacts}
-            deleteContact={this.deleteContacts}
+            deleteContact={deleteContacts}
           />
         </Section>
       </>
     );
   }
-}
+  
+
 
 App.propTypes = {
   name: PropTypes.string,
